@@ -6,23 +6,25 @@ export class ProductController {
 
   async create(req: Request, res: Response) {
     const { name, description, price, image } = req.body;
+    console.log(name, description, price, image); // Adicione isso para ver se os dados estão corretos
     const userId = req.user.id; // Pega o ID do usuário autenticado
-  
+    
     const user = await userRepository.findOneBy({ id: userId });
     if (!user) {
       return res.status(404).json({ message: "Usuário não encontrado" });
     }
-  
+
+    // Salvando o produto no banco
     const newProduct = productRepository.create({
       name,
       description,
       price,
-      image: image || null,
+      image: image ? image : null,  // Verificando se a imagem foi enviada
       user: user,
     });
-  
+
     await productRepository.save(newProduct);
-    return res.status(201).json(newProduct);
+    return res.status(201).json(newProduct); // Retorna o produto criado
   }
   
 
@@ -34,9 +36,11 @@ export class ProductController {
   async getById(req: Request, res: Response) {
     const { id } = req.params
     const product = await productRepository.findOneBy({ id: Number(id) })
+    console.log(product)
     if (!product) {
       return res.status(404).json({ message: "Produto não encontrado" })
     }
+    console.log(product)
     return res.json(product)
   }
 
