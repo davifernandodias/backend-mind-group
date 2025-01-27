@@ -1,19 +1,29 @@
-import { Router } from 'express'
-import { UserController } from './controllers/userController'
-import { ProductController } from './controllers/productController'
+import { Router } from "express";
+import { LoginController } from "./controllers/loginController";
+import { UserController } from "./controllers/userController";
+import { ProductController } from "./controllers/productController";
+import { authMiddleware } from "./middlewares/authMiddleware";
 
-const routes = Router()
+const routes = Router();
+const loginController = new LoginController();
+const userController = new UserController();
+const productController = new ProductController();
 
-routes.post('/user', new UserController().create)   
-routes.get('/users', new UserController().getAll)  
-routes.get('/user/:id', new UserController().getById)  
-routes.put('/user/:id', new UserController().update)   
-routes.delete('/user/:id', new UserController().delete)
+routes.post("/users", (req, res) => userController.create(req, res));
 
-routes.post('/product/:userId', new ProductController().create)  
-routes.get('/products', new ProductController().getAll)       
-routes.get('/product/:id', new ProductController().getById)     
-routes.put('/product/:id', new ProductController().update)     
-routes.delete('/product/:id', new ProductController().delete)  
+routes.post("/login", (req, res) => loginController.login(req, res));
 
-export default routes
+routes.use(authMiddleware); 
+
+routes.get("/users", (req, res) => userController.getAll(req, res));
+routes.get("/users/:id", (req, res) => userController.getById(req, res));
+routes.put("/users/:id", (req, res) => userController.update(req, res));
+routes.delete("/users/:id", (req, res) => userController.delete(req, res));
+
+routes.post("/products/:userId", (req, res) => productController.create(req, res));
+routes.get("/products", (req, res) => productController.getAll(req, res));
+routes.get("/products/:id", (req, res) => productController.getById(req, res));
+routes.put("/products/:id", (req, res) => productController.update(req, res));
+routes.delete("/products/:id", (req, res) => productController.delete(req, res));
+
+export default routes;
