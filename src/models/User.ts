@@ -3,21 +3,22 @@ import { Product } from "./Product"
 
 @Entity("users")
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
+  
+  @Column({ type: 'text' })
+  email: string;
 
   @Column({ type: 'text' })
-  email: string
+  firstName: string;
 
   @Column({ type: 'text' })
-  firstName: string
+  lastName: string;
 
   @Column({ type: 'text' })
-  lastName: string
+  password: string;
 
-  @Column({ type: 'text' })
-  password: string
-
-  @OneToMany(() => Product, product => product.user)
-  products: Product[]
+  @OneToMany(() => Product, (product) => product.user)
+  products: Product[];
 }
+
