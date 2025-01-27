@@ -1,26 +1,24 @@
-    import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm"
-    import { User } from "./User"
-    import { Blob } from "buffer"
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
+import { User } from "./User";
 
-    @Entity("products")
-    export class Product {
-        @PrimaryGeneratedColumn()
-        id: number
+@Entity("products")
+export class Product {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-        @Column()
-        name: string
+  @Column()
+  name: string;
 
-        @Column()
-        description: string
+  @Column()
+  description: string;
 
-        @Column()
-        price: number
-        
-        @Column("blob", { nullable: true })
-        image: Blob;
+  @Column()
+  price: number;
 
-        @ManyToOne(() => User, user => user.products)
-        @JoinColumn({  name: 'user_id' })
-        user: User
-    
-    }
+  @Column("blob", { nullable: true }) // Usando "blob" para armazenar imagens
+  image: Buffer;
+
+  @ManyToOne(() => User, (user) => user.products)
+  @JoinColumn({ name: "user_id" })
+  user: User;
+}

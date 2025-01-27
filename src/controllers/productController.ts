@@ -1,32 +1,42 @@
 import { Request, Response } from "express"
 import { productRepository } from "../repository/productRepository"
 import { userRepository } from "../repository/userRepository"
+import path from "path";
+import fs from 'fs'
 
 export class ProductController {
 
+
   async create(req: Request, res: Response) {
-    const { name, description, price, image } = req.body;
-    console.log(name, description, price, image); // Adicione isso para ver se os dados estão corretos
-    const userId = req.user.id; // Pega o ID do usuário autenticado
-    
+    const { name, description, price } = req.body;
+    const userId = req.user.id;  // Pega o ID do usuário autenticado
+
     const user = await userRepository.findOneBy({ id: userId });
     if (!user) {
       return res.status(404).json({ message: "Usuário não encontrado" });
     }
 
-    // Salvando o produto no banco
+    // Verifique se a imagem foi enviada
+    if (!req.file) {
+      return res.status(400).json({ message: "Imagem do produto é obrigatória." });
+    }
+
+    // Lê o arquivo da imagem e converte para Buffer (BLOB)
+    const imagePath = path.join(__dirname, `../../public/images/products/${req.file.filename}`);
+    const imageBuffer = fs.readFileSync(imagePath);
+
+    // Salvando o produto no banco com o BLOB da imagem
     const newProduct = productRepository.create({
       name,
       description,
       price,
-      image: image ? image : null,  // Verificando se a imagem foi enviada
+      image: imageBuffer,  // Armazena o Buffer (BLOB) da imagem
       user: user,
     });
 
     await productRepository.save(newProduct);
-    return res.status(201).json(newProduct); // Retorna o produto criado
+    return res.status(201).json(newProduct);  // Retorna o produto criado
   }
-  
 
   async getAll(req: Request, res: Response) {
     const products = await productRepository.find()

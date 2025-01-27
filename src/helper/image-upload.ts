@@ -1,23 +1,27 @@
-// helper/image-upload.ts
-import multer from "multer";
-import path from "path";
+import fs from 'fs';
+import path from 'path';
+import multer from 'multer';
+import crypto from 'crypto';
 
-const imagesStorage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    const folder = "products";  // Subpasta para imagens de produtos
-    cb(null, `public/images/${folder}`);
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname));  // Nome único baseado no timestamp
-  }
-});
+// Defina o caminho correto para armazenar as imagens
+const uploadPath = path.resolve(__dirname, '..', '..', 'public', 'images', 'products');
 
+// Crie o diretório se ele não existir
+if (!fs.existsSync(uploadPath)) {
+  fs.mkdirSync(uploadPath, { recursive: true });
+}
+
+// Configuração do Multer
 export const imageUpload = multer({
-  storage: imagesStorage,
-  fileFilter(req, file, cb) {
-    if (!file.originalname.match(/\.(png|jpg)$/)) {
-      return cb(new Error("Envie apenas arquivos JPG ou PNG!"));
-    }
-    cb(undefined, true);
-  }
+  storage: multer.diskStorage({
+    destination: function (req, file, callback) {
+      // Diretório onde a imagem será salva
+      callback(null, uploadPath);
+    },
+    filename: function (req, file, callback) {
+      const fileHash = crypto.randomBytes(10).toString("hex");
+      const fileName = `${fileHash}-${file.originalname}`;
+      callback(null, fileName);
+    },
+  }),
 });
