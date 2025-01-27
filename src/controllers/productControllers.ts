@@ -30,5 +30,13 @@ export class ProductController {
     return res.json(products)
   }
 
+  async getById(req: Request, res: Response) {
+    const { id } = req.params
+    const product = await productRepository.findOneBy({ id: Number(id) })
+    if (!product) {
+      return res.status(404).json({ message: "Produto não encontrado" })
+    }
+    return res.json(product)
+  }
 
 }
