@@ -7,10 +7,11 @@ AppDataSource.initialize().then(() => {
   const app = express();
 
   const corsOptions = {
-    origin: '*',  
-    methods: 'GET,POST,PUT,DELETE',  
-    allowedHeaders: 'Content-Type, Authorization', 
+    origin: 'http://localhost:3000',  
+    methods: 'GET,POST,PUT,DELETE',
+    allowedHeaders: 'Content-Type, Authorization',
   };
+  
 
   app.use(cors(corsOptions));  
   app.use(express.json());
