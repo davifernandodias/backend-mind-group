@@ -13,3 +13,8 @@ export const productValidationSchema = z.object({
   price: z.number().positive('O preço deve ser um número positivo'),
   image: z.instanceof(Buffer).optional(), 
 });
+
+export const loginValidationSchema = z.object({
+  email: z.string().email('Email inválido'),
+  password: z.string().min(6, 'A senha deve ter pelo menos 6 caracteres').max(100, 'A senha não pode ter mais de 100 caracteres'),
+})
