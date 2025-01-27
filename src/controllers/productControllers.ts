@@ -25,4 +25,10 @@ export class ProductController {
     return res.status(201).json(newProduct)
   }
 
+  async getAll(req: Request, res: Response) {
+    const products = await productRepository.find()
+    return res.json(products)
+  }
+
+
 }
