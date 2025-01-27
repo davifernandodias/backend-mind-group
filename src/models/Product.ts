@@ -15,7 +15,7 @@ export class Product {
   @Column()
   price: number;
 
-  @Column("blob", { nullable: true }) // Usando "blob" para armazenar imagens
+  @Column("blob", { nullable: true }) 
   image: Buffer;
 
   @ManyToOne(() => User, (user) => user.products)

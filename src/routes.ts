@@ -30,7 +30,9 @@ routes.post("/products/:userId",
 
 routes.get("/products", (req, res) => productController.getAll(req, res));
 routes.get("/products/:id", (req, res) => productController.getById(req, res));
-routes.put("/products/:id", (req, res) => productController.update(req, res));
-routes.delete("/products/:id", (req, res) => productController.delete(req, res));
+routes.put("/products/:id", 
+  imageUpload.single("image"), // Adicione o middleware de upload de imagem aqui também
+  (req, res) => productController.update(req, res)
+);routes.delete("/products/:id", (req, res) => productController.delete(req, res));
 
 export default routes;
