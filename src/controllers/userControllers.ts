@@ -54,7 +54,29 @@ export class UserController {
     }
   }
 
-
+  async update(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+  
+      let user = await userRepository.findOneBy({ id: Number(id) });
+      if (!user) {
+        return res.status(404).json({ message: "Usuário não encontrado" });
+      }
+  
+      const validatedData = userValidationSchema.parse(req.body);
+  
+      user = { ...user, ...validatedData }; 
+  
+      await userRepository.save(user);
+  
+      return res.json(user);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ errors: error.errors });
+      }
+      return res.status(500).json({ message: "Erro ao atualizar usuário" });
+    }
+  }
   
 
 }
