@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { userRepository } from "../repository/userRepository";
+import { productRepository } from "../repository/productRepository";
 import { userValidationSchema } from "../validator/validatorSchema";
 import { z } from "zod";
 
@@ -29,5 +30,31 @@ export class UserController {
     }
   }
 
+  async getAll(req: Request, res: Response) {
+    try {
+      const users = await userRepository.find();
+      return res.json(users);
+    } catch (error) {
+      return res.status(500).json({ message: "Erro ao buscar usuários" });
+    }
+  }
+
+  async getById(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      
+      const user = await userRepository.findOneBy({ id: Number(id) });
+      if (!user) {
+        return res.status(404).json({ message: "Usuário não encontrado" });
+      }
+
+      return res.json(user);
+    } catch (error) {
+      return res.status(500).json({ message: "Erro ao buscar usuário" });
+    }
+  }
+
+
   
+
 }
