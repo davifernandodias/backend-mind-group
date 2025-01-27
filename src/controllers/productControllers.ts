@@ -54,5 +54,15 @@ export class ProductController {
     return res.json(product)
   }
 
+  async delete(req: Request, res: Response) {
+    const { id } = req.params
 
+    const product = await productRepository.findOneBy({ id: Number(id) })
+    if (!product) {
+      return res.status(404).json({ message: "Produto não encontrado" })
+    }
+
+    await productRepository.remove(product)
+    return res.status(204).json()  
+  }
 }
