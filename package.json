@@ -31,8 +31,9 @@
       "zod": "^3.24.1"
    },
    "scripts": {
-      "docker:up": "docker-compose up -d",
-      "docker:down": "docker-compose down",
+      "docker:up": "sudo docker-compose up -d",
+      "docker:down": "sudo docker-compose down",
+      "docker:build": "sudo docker-compose up --build ",
       "docker:restart": "npm run docker:down && npm run docker:up",
       "docker:logs": "docker-compose logs -f",
       "docker:cleanup": "docker-compose down --volumes --remove-orphans",
