@@ -49,21 +49,23 @@ cd backend-mind-group
 
 ### 2. Suba os contêineres com Docker Compose
 
-sudo docker-compose up --build
+docker-compose up --build
 
 Acesse o MySQL no contêiner
 
 Caso não saiba o nome do contêiner, execute:
 
-sudo docker ps
+docker ps
 
 Depois, acesse o MySQL com:
 
-sudo docker exec -it {container-name} mysql -u root -p
+docker exec -it {container-name} mysql -u root -p
 
 Execute as migrações
 
 No contêiner da API, execute os comandos para gerar e aplicar as migrações:
 
 npm run migration:generate
+
 npm run migration:run
+
