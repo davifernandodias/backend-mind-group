@@ -3,12 +3,15 @@ import { userRepository } from "../repository/userRepository";
 import { productRepository } from "../repository/productRepository";
 import { userValidationSchema } from "../validator/validatorSchema";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import { z } from "zod";
+
 
 export class UserController {
 
   async create(req: Request, res: Response) {
     try {
+      console.log(req.body);
       const validatedData = userValidationSchema.parse(req.body);
       
       const { email, firstName, lastName, password } = validatedData;
@@ -30,8 +33,16 @@ export class UserController {
   
       await userRepository.save(newUser);
   
+      // Gerar o token JWT
+      const token = jwt.sign(
+        { id: newUser.id, email: newUser.email },
+        process.env.JWT_PASS ?? "",  
+        { expiresIn: "1h" } 
+      );
+  
       return res.status(201).json({
         message: "Usuário criado com sucesso!",
+        token,  
         user: {
           id: newUser.id,
           email: newUser.email,
@@ -46,10 +57,8 @@ export class UserController {
       }
   
       return res.status(500).json({ message: "Erro interno no servidor" });
-
     }
   }
-  
   
   // Métodos restantes permanecem os mesmos
   async getAll(req: Request, res: Response) {
