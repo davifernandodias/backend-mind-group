@@ -45,6 +45,8 @@ git clone https://github.com/davifernandodias/backend-mind-group
 
 cd backend-mind-group
 
+remove .example da .env
+
 2. Suba os contêineres com Docker Compose
 
 sudo docker-compose up --build
