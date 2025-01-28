@@ -1,4 +1,5 @@
-# Sistema de Gerenciamento de Estoque - Backend
+# Backend Case - Sistema de Estoque
+
 
 Bem-vindo ao backend do **Sistema de Gerenciamento de Estoque**! Este projeto fornece uma API robusta para gerenciar estoques, permitindo funcionalidades como:
 
