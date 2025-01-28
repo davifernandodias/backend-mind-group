@@ -50,6 +50,7 @@ cd backend-mind-group
         <h3>5. Inicie o servidor</h3>
         <p>Execute o servidor em modo de desenvolvimento:</p>
         <pre>npm run dev</pre>
+       <pre>para consumir essa api no frontend, lembre de configurar a rota do cors para bater na url que está sendo exposta no front</pre>
     </div>
     <div class="section">
         <h2>Estrutura do Projeto</h2>
