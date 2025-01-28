@@ -74,4 +74,5 @@ npm run migration:run
 ## 3. Acessar documentação das rotas
 
 ápos acesse o [localhost:8080/api-docs](http://localhost:8080/api-docs/)
+![Image](https://github.com/user-attachments/assets/f6377a14-9efe-499a-badb-22759e2ff4d3)
 
