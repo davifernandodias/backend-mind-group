@@ -1,41 +1,53 @@
 import { Request, Response } from "express";
 import { productRepository } from "../repository/productRepository";
 import { userRepository } from "../repository/userRepository";
+import { z } from "zod";
 import path from "path";
 import fs from "fs";
+import { productValidationSchema } from "../validator/validatorSchema";
 
 export class ProductController {
   async create(req: Request, res: Response) {
-    const { name, description, price } = req.body;
-    const userId = req.user.id;
+    try {
+      const validatedData = productValidationSchema.parse(req.body)
+      const { name, description, price } = validatedData;
+      const userId = req.user.id;
+      const user = await userRepository.findOneBy({ id: userId });
+      if (!user) {
+        return res.status(404).json({ message: "Usuário não encontrado" });
 
-    // Verifica se o usuário existe
-    const user = await userRepository.findOneBy({ id: userId });
-    if (!user) {
-      return res.status(404).json({ message: "Usuário não encontrado" });
+      }
+      if (!req.file) {
+        return res.status(400).json({ message: "Imagem do produto é obrigatória." });
+      }
+      // Verifica se o usuário existe
+      // Verifica se a imagem foi enviada
+  
+  
+      // Lê a imagem e a converte para buffer
+      const imagePath = path.join(__dirname, `../../public/images/products/${req.file.filename}`);
+      const imageBuffer = fs.readFileSync(imagePath);
+  
+      // Cria o novo produto com a imagem em formato de buffer (BLOB)
+      const newProduct = productRepository.create({
+        name,
+        description,
+        price,
+        image: imageBuffer,  // Armazena a imagem como um BLOB no banco de dados
+        user: user,
+      });
+  
+      // Salva o produto no banco de dados
+      await productRepository.save(newProduct);
+      return res.status(201).json(newProduct);
+    }catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ errors: error.errors });
+      }
+  
+      return res.status(500).json({ message: "Erro interno no servidor" });
     }
 
-    // Verifica se a imagem foi enviada
-    if (!req.file) {
-      return res.status(400).json({ message: "Imagem do produto é obrigatória." });
-    }
-
-    // Lê a imagem e a converte para buffer
-    const imagePath = path.join(__dirname, `../../public/images/products/${req.file.filename}`);
-    const imageBuffer = fs.readFileSync(imagePath);
-
-    // Cria o novo produto com a imagem em formato de buffer (BLOB)
-    const newProduct = productRepository.create({
-      name,
-      description,
-      price,
-      image: imageBuffer,  // Armazena a imagem como um BLOB no banco de dados
-      user: user,
-    });
-
-    // Salva o produto no banco de dados
-    await productRepository.save(newProduct);
-    return res.status(201).json(newProduct);
   }
 
   async getAll(req: Request, res: Response) {
