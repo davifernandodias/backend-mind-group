@@ -17,6 +17,7 @@ O projeto foi desenvolvido utilizando as seguintes tecnologias e ferramentas:
 - **[TypeORM](https://typeorm.io/)**: ORM para TypeScript e JavaScript (ES7+).
 - **[MySQL](https://www.mysql.com/)**: Banco de dados relacional.
 - **[Docker Compose](https://docs.docker.com/compose/)**: Ferramenta para definir e gerenciar contêineres Docker.
+- **[Swagger](https://www.npmjs.com/package/swagger-ui-express)**: Swagger para documentação das rotas.
 
 ---
 
@@ -68,4 +69,8 @@ No contêiner da API, execute os comandos para gerar e aplicar as migrações:
 npm run migration:generate
 
 npm run migration:run
+
+## 3. Acessar documentação das rotas
+
+ápos acesse o [localhost:8080/api-docs](http://localhost:8080/api-docs/)
 
