@@ -10,7 +10,7 @@ export class UserController {
   async create(req: Request, res: Response) {
     try {
       const validatedData = userValidationSchema.parse(req.body);
-  
+      
       const { email, firstName, lastName, password } = validatedData;
   
       const existingUser = await userRepository.findOne({ where: { email } });
@@ -40,11 +40,13 @@ export class UserController {
         }, 
       });
     } catch (error) {
+      console.error(error);
       if (error instanceof z.ZodError) {
         return res.status(400).json({ errors: error.errors });
       }
   
       return res.status(500).json({ message: "Erro interno no servidor" });
+
     }
   }
   

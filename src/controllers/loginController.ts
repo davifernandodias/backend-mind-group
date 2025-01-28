@@ -9,6 +9,7 @@ import { userRepository } from "../repository/userRepository";
 export class LoginController {
   async login(req: Request, res: Response) {
     try {
+      console.log(req.body)
       const validatedData = loginValidationSchema.parse(req.body);
 
       const { email, password } = validatedData;

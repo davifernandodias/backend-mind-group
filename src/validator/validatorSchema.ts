@@ -9,8 +9,8 @@ export const userValidationSchema = z.object({
 
 export const productValidationSchema = z.object({
   name: z.string().min(2, 'O nome do produto deve ter pelo menos 2 caracteres').max(100, 'O nome do produto não pode ter mais de 100 caracteres'),
-  description: z.string().min(10, 'A descrição deve ter pelo menos 10 caracteres').max(500, 'A descrição não pode ter mais de 500 caracteres'),
-  price: z.number().positive('O preço deve ser um número positivo'),
+  description: z.string().min(2, 'A descrição deve ter pelo menos 2 caracteres').max(500, 'A descrição não pode ter mais de 500 caracteres'),
+  price: z.any(),
   image: z.instanceof(Buffer).optional(), 
 });
 
