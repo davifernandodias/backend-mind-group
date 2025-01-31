@@ -53,15 +53,15 @@ cd backend-mind-group
 
 docker-compose up --build
 
-Acesse o MySQL no contêiner
+Acesse a api no contêiner
 
 Caso não saiba o nome do contêiner, execute:
 
 docker ps
 
-Depois, acesse o MySQL com:
+Depois, acesse a api com:
 
-docker exec -it {container-name} mysql -u root -p
+docker exec -it {container-name} 
 
 Execute as migrações
 
